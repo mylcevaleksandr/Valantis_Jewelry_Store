@@ -1,0 +1,54 @@
+<header class="header">
+  <div class="container">
+    <a class="logo" routerLink="/">
+      <img src="/assets/images/valantis-logo.png" alt="Logo">
+    </a>
+    <div class="header-content">
+      <div class="header-top">
+        <div class="header-top-menu">
+          <nav>
+            <ul>
+              <li>
+                <a routerLink="/">Главная</a>
+              </li>
+              <li>
+                <a routerLink="/catalog">Каталог</a>
+              </li>
+              <li>
+                <a routerLink="/" fragment="reviews">Отзывы</a>
+              </li>
+              <li>
+                <a routerLink="/" fragment="delivery">Доставка и Оплата</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <a href="tel:+7(911)407-8612" class="header-top-phone">
+          +7(911)407-8612
+        </a>
+      </div>
+
+      <div class="header-bottom">
+        <div class="header-bottom-menu">
+          <nav>
+            <ul>
+<!--              <li *ngFor="let category of categories">-->
+<!--                <a routerLink="/catalog" [queryParams]="{types:category?.typesUrl}">{{category.name}}</a>-->
+<!--              </li>-->
+            </ul>
+          </nav>
+        </div>
+        <div class="header-bottom-search">
+          <input class="header-search-input" type="text" placeholder="Начните искать" [formControl]="searchField"
+                 (focus)="changeShowedSearch(true)" (blur)="changeShowedSearch(false)">
+          <div class="search-products" *ngIf="showSearch&&products&&products.length>0">
+            <div class="search-product" *ngFor="let product of products" (click)="selectProduct(product.id)">
+              <div class="search-product-image" style="background-image:url('/src/assets/images/valantis_card_image.png')"></div>
+              <div class="search-product-name">{{product.name}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
