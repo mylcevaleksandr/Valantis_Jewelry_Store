@@ -1,7 +1,9 @@
 .main {
+  flex: 1 0 auto;
+
+  padding-top: 15px;
   text-align: center;
-  padding-top: 100px;
-  padding-bottom: 200px;
+  padding-bottom: 175px;
 
   .main_title {
     font-weight: 500;

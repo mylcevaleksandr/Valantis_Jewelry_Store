@@ -7,6 +7,8 @@ import {catchError, retry, throwError} from "rxjs";
 import {IdResponseType} from "../../../types/idResponse.type";
 import {GetItemsType} from "../../../types/getItems.type";
 import {ItemResponseType} from "../../../types/itemResponse.type";
+import {ProductType} from "../../../types/product.type";
+import {LoaderService} from "../../shared/services/loader.service";
 
 @Component({
   selector: 'app-catalog',
@@ -15,52 +17,101 @@ import {ItemResponseType} from "../../../types/itemResponse.type";
 })
 export class CatalogComponent implements OnInit {
   private idArray: string[] = [];
-  private page: number = 1;
-  public products: {product:string}[] = [];
+  public products: ProductType[] = [];
+  public catalogCodes: number[] = [];
+  public current: number = 1;
+  public perPage: number = 50;
+  public total: number = 0;
+  public itemsToDisplay: string[] = [];
 
-  constructor(private productService: ProductService) {
+  constructor(private productService: ProductService, private loaderService: LoaderService) {
   }
 
   ngOnInit(): void {
+    this.loaderService.show();
     this.getIds();
   }
 
+  //Get all product ids from backend and after sorting out repeating ids, save them to this.idArray
   private getIds(): void {
     const body: GetIdType = {
       "action": "get_ids",
     };
     this.productService.getAllIds(body, EncryptionUtil.authHeader()).pipe(catchError(this.handleError), retry(3)).subscribe((data: IdResponseType): void => {
       this.idArray = Array.from(new Set(data.result));
-      this.showProducts();
+      this.total = Math.ceil(this.idArray.length / this.perPage);
+      this.itemsToDisplay = this.paginate(this.current, this.perPage);
+      this.showProducts(this.itemsToDisplay);
     });
   }
 
-  private showProducts() {
+  //Add products to show to this.products array.
+  private showProducts(itemsToDisplay: string[]): void {
+    this.products = [];
+    this.generateProductCodes(this.current, this.perPage);
     const body: GetItemsType = {
       "action": "get_items",
-      params: {"ids": this.idArray.slice(0, 50)}
+      params: {"ids": itemsToDisplay}
     };
-    this.productService.getItems(body, EncryptionUtil.authHeader()).pipe(catchError(this.handleError), retry(3)).subscribe((data: ItemResponseType) => {
+    this.productService.getItems(body, EncryptionUtil.authHeader()).pipe(catchError(this.handleError), retry(3)).subscribe((data: ItemResponseType): void => {
       if (data.result.length > 50) {
-        this.getItems(data.result);
+        this.getUniqueProducts(data.result);
       } else {
         this.products = data.result;
+        this.loaderService.hide();
       }
     });
   }
 
-  private getItems(data: any) {
-    let uniqueItems = new Set();
-    const list: any = [...new Set(data.filter((item: any) => {
-      if (!uniqueItems.has(item.id)) {
-        uniqueItems.add(item.id);
+  //Filter data from backend and return only products with unique ids.
+  private getUniqueProducts(data: ProductType[]): void {
+    let uniqueProducts: Set<string> = new Set();
+    const list: ProductType[] = [...new Set(data.filter((item: ProductType): ProductType | boolean => {
+      if (!uniqueProducts.has(item.id)) {
+        uniqueProducts.add(item.id);
         return item;
       }
+      return false;
     }))];
-    console.log(list);
     this.products = list;
+    this.loaderService.hide();
   }
 
+  //Pagination button actions
+  public onNext(page: number): void {
+    this.current = page + 1;
+    this.itemsToDisplay = this.paginate(this.current, this.perPage);
+    this.loaderService.show();
+    this.showProducts(this.itemsToDisplay);
+  }
+
+  public onPrevious(page: number): void {
+    this.current = page - 1;
+    this.itemsToDisplay = this.paginate(this.current, this.perPage);
+    this.loaderService.show();
+    this.showProducts(this.itemsToDisplay);
+  }
+
+  public onGoTo(page: number): void {
+    this.current = page;
+    this.itemsToDisplay = this.paginate(this.current, this.perPage);
+    this.loaderService.show();
+    this.showProducts(this.itemsToDisplay);
+  }
+
+  //Add a number to each product card on screen
+  private generateProductCodes(current: number, perPage: number): void {
+    let arrayOfCodes: number[] = [], length: number = perPage, start: number = (current - 1) * perPage + 1;
+    while (length--) arrayOfCodes[length] = length + start;
+    this.catalogCodes = arrayOfCodes;
+  }
+
+  //Return ids of products which should be displayed on current page
+  public paginate(current: number, perPage: number): string[] {
+    return [...this.idArray.slice((current - 1) * perPage).slice(0, perPage)];
+  }
+
+//Handle errors in response
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
       console.log('An error occurred:', error.error);

@@ -1,4 +1,6 @@
-export type ProductType={
-name?:string,
-  id:string
+export type ProductType = {
+  brand: null | string,
+  id: string,
+  price: number,
+  product: string
 }

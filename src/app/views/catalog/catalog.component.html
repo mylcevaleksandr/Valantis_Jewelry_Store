@@ -1,1 +1,15 @@
-<p *ngFor="let product of products let index = index">{{index+1 +' '+ product.product}}</p>
+<div class="catalog">
+  <div class="container">
+    <div class="catalog-cards">
+      <product-card *ngFor="let product of products let index = index" [product]="product"
+                    [count]="catalogCodes[index]"></product-card>
+    </div>
+    <app-pagination *ngIf="products.length > 5"
+                    [current]="current"
+                    [total]="total"
+                    (goTo)="onGoTo($event)"
+                    (next)="onNext($event)"
+                    (previous)="onPrevious($event)"
+    ></app-pagination>
+  </div>
+</div>

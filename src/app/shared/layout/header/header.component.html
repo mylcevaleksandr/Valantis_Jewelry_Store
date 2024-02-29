@@ -44,7 +44,7 @@
           <div class="search-products" *ngIf="showSearch&&products&&products.length>0">
             <div class="search-product" *ngFor="let product of products" (click)="selectProduct(product.id)">
               <div class="search-product-image" style="background-image:url('/src/assets/images/valantis_card_image.png')"></div>
-              <div class="search-product-name">{{product.name}}</div>
+              <div class="search-product-name">{{product.product}}</div>
             </div>
           </div>
         </div>

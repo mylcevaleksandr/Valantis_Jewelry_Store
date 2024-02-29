@@ -1,7 +1,7 @@
 export type ItemResponseType = {
   result: [
     {
-      brand: null|string,
+      brand: null | string,
       id: string,
       price: number,
       product: string

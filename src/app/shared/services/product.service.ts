@@ -15,10 +15,10 @@ export class ProductService {
   }
 
   public getAllIds(body: GetIdType, headers: HeaderType) {
-    return this.http.post<IdResponseType>('https://api.valantis.store:41000/', body, {headers})
+    return this.http.post<IdResponseType>('https://api.valantis.store:41000/', body, {headers});
   }
 
-  public getItems(body:GetItemsType,headers:HeaderType){
-    return this.http.post<ItemResponseType>('https://api.valantis.store:41000/', body, {headers})
+  public getItems(body: GetItemsType, headers: HeaderType) {
+    return this.http.post<ItemResponseType>('https://api.valantis.store:41000/', body, {headers});
   }
 }

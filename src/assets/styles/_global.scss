@@ -11,6 +11,7 @@
 html, body {
   background-color: #FFF;
   font-family: 'Montserrat', sans-serif;
+  color: $main-green-color;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -39,17 +40,20 @@ ul, li {
   font-weight: 400;
   text-align: center;
   border-radius: 30px;
-  color: $green-border-color;
+  color: $greenish-color;
   background-color: $button-color;
   border: 1px solid $green-border-color;
   padding: 14px;
   box-sizing: border-box;
   cursor: pointer;
 
-  &:hover {
-    background-color: $green-border-color;
+  &:not([disabled]):hover {
+    background-color: $greenish-color;
     color: $button-color;
     border-color: $button-color;
   }
 }
 
+.mat-mdc-progress-spinner circle {
+  stroke: $green-border-color;
+}
