@@ -79,24 +79,7 @@
       padding-top: 16px;
       display: flex;
       align-items: center;
-
-      .header-bottom-menu {
-        margin-left: 26px;
-        margin-right: 147px;
-
-        nav ul {
-          display: flex;
-          column-gap: 50px;
-
-          li {
-            border-bottom: 1px solid transparent;
-
-            &.active {
-              border-bottom-color: $green-text-color;
-            }
-          }
-        }
-      }
+      justify-content: space-around;
 
       .header-bottom-search {
         position: relative;

@@ -9,6 +9,9 @@ import {GetItemsType} from "../../../types/getItems.type";
 import {ItemResponseType} from "../../../types/itemResponse.type";
 import {ProductType} from "../../../types/product.type";
 import {LoaderService} from "../../shared/services/loader.service";
+import {ActivatedRoute} from "@angular/router";
+import {GetItemsFilterType} from "../../../types/getItemsFilter.type";
+import {ProcessErrorUtil} from "../../shared/utils/processError.util";
 
 @Component({
   selector: 'app-catalog',
@@ -24,10 +27,13 @@ export class CatalogComponent implements OnInit {
   public total: number = 0;
   public itemsToDisplay: string[] = [];
 
-  constructor(private productService: ProductService, private loaderService: LoaderService) {
+  constructor(private productService: ProductService, private loaderService: LoaderService, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe(params => {
+      console.log(params);
+    });
     this.loaderService.show();
     this.getIds();
   }
@@ -37,7 +43,7 @@ export class CatalogComponent implements OnInit {
     const body: GetIdType = {
       "action": "get_ids",
     };
-    this.productService.getAllIds(body, EncryptionUtil.authHeader()).pipe(catchError(this.handleError), retry(3)).subscribe((data: IdResponseType): void => {
+    this.productService.getAllIds(body, EncryptionUtil.authHeader()).pipe(catchError(ProcessErrorUtil.handleError), retry(3)).subscribe((data: IdResponseType): void => {
       this.idArray = Array.from(new Set(data.result));
       this.total = Math.ceil(this.idArray.length / this.perPage);
       this.itemsToDisplay = this.paginate(this.current, this.perPage);
@@ -53,7 +59,24 @@ export class CatalogComponent implements OnInit {
       "action": "get_items",
       params: {"ids": itemsToDisplay}
     };
-    this.productService.getItems(body, EncryptionUtil.authHeader()).pipe(catchError(this.handleError), retry(3)).subscribe((data: ItemResponseType): void => {
+    this.productService.getItems(body, EncryptionUtil.authHeader()).pipe(catchError(ProcessErrorUtil.handleError), retry(3)).subscribe((data: ItemResponseType): void => {
+      if (data.result.length > 50) {
+        this.getUniqueProducts(data.result);
+      } else {
+        this.products = data.result;
+        this.loaderService.hide();
+      }
+    });
+  }
+
+  private showProductsWithFilter(field: string, filter: string): void {
+    this.products = [];
+    this.generateProductCodes(this.current, this.perPage);
+    const body: GetItemsFilterType = {
+      "action": "filter",
+      params: {[field as keyof GetItemsFilterType]: filter}
+    };
+    this.productService.getItemsWithFilter(body, EncryptionUtil.authHeader()).pipe(catchError(ProcessErrorUtil.handleError), retry(3)).subscribe((data: ItemResponseType): void => {
       if (data.result.length > 50) {
         this.getUniqueProducts(data.result);
       } else {

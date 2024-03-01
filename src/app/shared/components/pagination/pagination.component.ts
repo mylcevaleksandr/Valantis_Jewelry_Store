@@ -37,17 +37,17 @@ export class PaginationComponent implements OnChanges {
   }
 
   private getPages(current: number, total: number): number[] {
-    if (total <= 7) {
+    if (total <= 5) {
       return [...Array(total).keys()].map(x => ++x);
     }
-    if (current >= 5) {
-      if (current >= total - 3) {
-        return [1, -1, total - 4, total - 3, total - 2, total - 1, total];
+    if (current >= 3) {
+      if (current >= total - 1) {
+        return [1, -1, total - 2, total - 1, total];
       } else {
         return [1, -1, current - 1, current, current + 1, -1, total];
       }
     }
-    return [1, 2, 3, 4, 5, -1, total];
+    return [1, 2, 3, -1, total];
   }
 
 
