@@ -26,6 +26,7 @@ export class HeaderComponent {
   }
 
   public getFieldFilters(field: string): void {
+    console.log(field);
     this.loaderService.show();
     const body: GetFieldsType = {
       "action": "get_fields",

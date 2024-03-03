@@ -17,13 +17,11 @@ export class LayoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loaderService.show();
     const body = {
       "action": "get_fields"
     };
     this.productService.getAllFields(body, EncryptionUtil.authHeader()).pipe(catchError(ProcessErrorUtil.handleError), retry(3)).subscribe(data => {
       this.categories = data.result.filter((item: string) => item !== 'product');
-      this.loaderService.hide();
     });
   }
 }

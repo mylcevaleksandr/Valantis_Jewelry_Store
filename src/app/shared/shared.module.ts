@@ -4,12 +4,14 @@ import {ProductCardComponent} from './components/product-card/product-card.compo
 import {LoaderComponent} from './components/loader/loader.component';
 import {PaginationComponent} from './components/pagination/pagination.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {CategoryFilterComponent} from './components/category-filter/category-filter.component';
 
 @NgModule({
   declarations: [
     ProductCardComponent,
     LoaderComponent,
-    PaginationComponent
+    PaginationComponent,
+    CategoryFilterComponent
   ],
   imports: [
     CommonModule,
@@ -17,7 +19,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
   ],
   exports: [
     ProductCardComponent,
-    // CategoryFilterComponent,
+    CategoryFilterComponent,
     LoaderComponent,
     PaginationComponent
   ]

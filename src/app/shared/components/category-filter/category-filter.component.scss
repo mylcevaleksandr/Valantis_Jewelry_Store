@@ -1,0 +1,74 @@
+@import "../../../../assets/styles/variables";
+
+.category-filter {
+  margin-bottom: 12px;
+  border-radius: 5px;
+  color: $gray-text-color;
+
+  .category-filter-head {
+    border-radius: 5px;
+    background: $light-green-background-color;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 23px;
+    cursor: pointer;
+  }
+
+  &.open .category-filter-head {
+    border-radius: 5px 5px 0 0;
+
+    svg {
+      margin-top: 2px;
+    }
+  }
+
+  .category-filter-body {
+    overflow: scroll;
+    height: 155px;
+    display: none;
+    padding: 12px 16px;
+    border-radius: 0 0 5px 5px;
+    border: 1px solid $light-green-background-color;
+
+    .category-filter-checkbox {
+      display: flex;
+      align-items: baseline;
+      margin-bottom: 19px;
+      line-height: 130%;
+      cursor: pointer;
+
+      input {
+        cursor: pointer
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      span {
+        margin-left: 10px;
+      }
+    }
+
+    .category-filter-from-to {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  &.open .category-filter-body {
+    display: block;
+  }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}

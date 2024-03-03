@@ -78,7 +78,6 @@
     .header-bottom {
       padding-top: 16px;
       display: flex;
-      align-items: center;
       justify-content: space-around;
 
       .header-bottom-search {
@@ -114,6 +113,8 @@
           position: absolute;
           right: 0;
           top: 61px;
+          height: 320px;
+          overflow: scroll;
           width: 400px;
           box-sizing: border-box;
           border: 1px solid $gray-line-color;
