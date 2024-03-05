@@ -14,12 +14,6 @@
               <li>
                 <a routerLink="/catalog">Каталог</a>
               </li>
-              <li>
-                <a routerLink="/" fragment="reviews">Отзывы</a>
-              </li>
-              <li>
-                <a routerLink="/" fragment="delivery">Доставка и Оплата</a>
-              </li>
             </ul>
           </nav>
         </div>
@@ -30,28 +24,9 @@
 
       <div class="header-bottom">
         <category-filter *ngFor="let category of categories" [category]="category"></category-filter>
-        <!--        <div class="header-bottom-search" *ngFor="let category of categories">-->
-        <!--          <input class="header-search-input" type="text" placeholder="Search by {{category}}"-->
-        <!--                 [formControl]="searchField"-->
-        <!--                 (focus)="getFieldFilters(category)" (blur)="changeShowedSearch(false)">-->
-        <!--          <div class="search-products" *ngIf="showSearch&&(category==='brand')&&brandFields&&brandFields.length>0">-->
-        <!--            <div class="search-product" *ngFor="let field of brandFields" (click)="selectProduct(field)">-->
-        <!--              <div class="search-product-image"-->
-        <!--                   style="background-image:url('/src/assets/images/valantis_card_image.png')"></div>-->
-        <!--              <div class="search-product-name">{{field}}</div>-->
-        <!--            </div>-->
-        <!--          </div>-->
-        <!--        </div>-->
         <div class="header-bottom-search">
           <input class="header-search-input" type="text" placeholder="Search by Product" [formControl]="searchField"
                  (focus)="changeShowedSearch(true)" (blur)="changeShowedSearch(false)">
-          <div class="search-products" *ngIf="showSearch&&products&&products.length>0">
-            <div class="search-product" *ngFor="let product of products" (click)="selectProduct(product.id)">
-              <div class="search-product-image"
-                   style="background-image:url('/src/assets/images/valantis_card_image.png')"></div>
-              <div class="search-product-name">{{product.product}}</div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

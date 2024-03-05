@@ -11,6 +11,7 @@ import {LoaderService} from "../../shared/services/loader.service";
 import {ActivatedRoute} from "@angular/router";
 import {GetIdsFilterType} from "../../../types/getIdsFilterType";
 import {ProcessErrorUtil} from "../../shared/utils/processError.util";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-catalog',
@@ -18,20 +19,21 @@ import {ProcessErrorUtil} from "../../shared/utils/processError.util";
   styleUrls: ['./catalog.component.scss']
 })
 export class CatalogComponent implements OnInit {
-  private idArray: string[] = [];
+  public idArray: string[] = [];
   public products: ProductType[] = [];
   public catalogCodes: number[] = [];
   public current: number = 1;
   public perPage: number = 50;
   public total: number = 0;
   public itemsToDisplay: string[] = [];
+  public searchEmpty: boolean = false;
 
   constructor(private productService: ProductService, private loaderService: LoaderService, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
-      if (params && params['category']) {
+      if (params && params['category'] && params['filterField']) {
         this.getIds(params['category'], params['filterField']);
       } else {
         this.getIds();
@@ -41,6 +43,7 @@ export class CatalogComponent implements OnInit {
 
   //Get all product ids from backend and after sorting out repeating ids, save them to this.idArray
   private getIds(category?: string, filter?: string): void {
+    this.searchEmpty = false;
     this.loaderService.show();
     let body: GetIdType | GetIdsFilterType = {
       "action": "get_ids",
@@ -52,12 +55,25 @@ export class CatalogComponent implements OnInit {
         params: {[category as keyof GetIdsFilterType]: param}
       };
     }
-
-    this.productService.getAllIds(body, EncryptionUtil.authHeader()).pipe(catchError(ProcessErrorUtil.handleError), retry(3)).subscribe((data: IdResponseType): void => {
-      this.idArray = Array.from(new Set(data.result));
-      this.total = Math.ceil(this.idArray.length / this.perPage);
-      this.itemsToDisplay = this.paginate(this.current, this.perPage);
-      this.showProducts(this.itemsToDisplay);
+    this.productService.getAllIds(body, EncryptionUtil.authHeader()).pipe(catchError(ProcessErrorUtil.handleError), retry(3)).subscribe({
+      next: (data: IdResponseType): void => {
+        if (data.result.length > 0) {
+          this.idArray = Array.from(new Set(data.result));
+          this.total = Math.ceil(this.idArray.length / this.perPage);
+          this.itemsToDisplay = this.paginate(this.current, this.perPage);
+          this.showProducts(this.itemsToDisplay);
+        } else {
+          this.idArray = [];
+          this.products = [];
+          this.searchEmpty = true;
+          this.loaderService.hide();
+        }
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.searchEmpty = true;
+        console.log(errorResponse);
+        this.loaderService.hide();
+      }
     });
   }
 
@@ -70,8 +86,13 @@ export class CatalogComponent implements OnInit {
       params: {"ids": itemsToDisplay}
     };
     this.productService.getItems(body, EncryptionUtil.authHeader()).pipe(catchError(ProcessErrorUtil.handleError), retry(3)).subscribe((data: ItemResponseType): void => {
-      this.products = this.getUniqueProducts(data.result);
-      this.loaderService.hide();
+      if (data.result && data.result.length > 0) {
+        this.products = this.getUniqueProducts(data.result);
+        this.loaderService.hide();
+      } else {
+        this.searchEmpty = true;
+        this.loaderService.hide();
+      }
     });
   }
 

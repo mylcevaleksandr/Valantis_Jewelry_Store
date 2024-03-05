@@ -1,5 +1,5 @@
-<div class="category-filter" [class.open]="open">
-  <div class="category-filter-head" (click)="getFieldFilters(category!)">
+<div class="category-filter" *ngIf="category" [class.open]="open">
+  <div class="category-filter-head" (click)="getFieldFilters(category)">
     <span>{{category}}</span>
     <svg *ngIf="open" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -13,9 +13,9 @@
     </svg>
   </div>
   <div class="category-filter-body">
-    <label class="category-filter-checkbox" *ngFor="let searchField of searchFields">
-      <input type="checkbox" #input
-             [checked]="activeParam"
+    <label class="category-filter-checkbox" *ngFor="let searchField of searchFields;let i=index">
+      <input type="checkbox" value="{{searchField}}"
+             [checked]="activeField==searchField"
              (change)="updateFilterParam(category!,searchField)">
       <span>{{searchField}}</span>
     </label>

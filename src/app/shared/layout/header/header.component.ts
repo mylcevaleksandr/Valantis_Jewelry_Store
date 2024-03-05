@@ -1,50 +1,49 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {ProductType} from "../../../../types/product.type";
 import {ProductService} from "../../services/product.service";
-import {EncryptionUtil} from "../../utils/encryption.util";
-import {GetFieldsType} from "../../../../types/getFields.type";
-import {catchError, retry} from "rxjs";
-import {ProcessErrorUtil} from "../../utils/processError.util";
 import {LoaderService} from "../../services/loader.service";
 import {Router} from "@angular/router";
+import {debounceTime} from "rxjs";
+import {ChangeSearchService} from "../../services/change-search.service";
 
+// @ts-ignore
+// @ts-ignore
+// @ts-ignore
+// @ts-ignore
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
-  public searchField = new FormControl();
+export class HeaderComponent implements OnInit {
+  public searchField: FormControl<string> = new FormControl();
   public showSearch: boolean = false;
+  public nothingFound: boolean = false;
   public products: ProductType[] = [];
-  public brandFields: string[] = [];
-  public priceFields: number[] = [];
   @Input() categories: string[] = [];
 
-  constructor(private productService: ProductService, private loaderService: LoaderService, private router: Router) {
+
+  constructor(private productService: ProductService, private loaderService: LoaderService, private searchChange: ChangeSearchService, private router: Router) {
+    this.searchChange.watchChanges().subscribe(search => {
+      if (!search) {
+        this.searchField.setValue('');
+      }
+    });
   }
 
-  public getFieldFilters(field: string): void {
-    console.log(field);
-    this.loaderService.show();
-    const body: GetFieldsType = {
-      "action": "get_fields",
-      "params": {"field": field}
-    };
-    this.productService.getFieldFilters(body, EncryptionUtil.authHeader()).pipe(catchError(ProcessErrorUtil.handleError), retry(3)).subscribe(data => {
-      switch (field) {
-        case "brand":
-          this.brandFields = Array.from(new Set(data.result.filter(Boolean)));
-          console.log(this.brandFields);
-          this.showSearch = true;
-          break;
-        case "price":
-          this.priceFields = Array.from(new Set(data.result)).map(i => Number(i));
-          console.log(this.priceFields);
-          break;
+  ngOnInit(): void {
+    this.searchField.valueChanges.pipe(debounceTime(500)).subscribe(value => {
+      if (value && value.length > 1) {
+        this.router.navigate(
+          [], {
+            queryParams: {
+              category: 'product',
+              filterField: value
+            }
+          }
+        );
       }
-      this.loaderService.hide();
     });
   }
 
@@ -52,14 +51,5 @@ export class HeaderComponent {
     setTimeout(() => {
       this.showSearch = value;
     }, 300);
-  }
-
-  public selectProduct(field: string) {
-    console.log(field);
-    this.router.navigate(
-      ['/catalog'], {
-        queryParams: {filterCatalog: field}
-      }
-    );
   }
 }
