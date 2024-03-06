@@ -1,5 +1,5 @@
 <div class="product-card" *ngIf="product">
-  <div class="product-card-image" style="background-image: url('assets/images/valantis_card_image.png')"></div>
+  <div class="product-card-image" style="background-image: url('assets/images/card-{{randomPicture}}.png')"></div>
   <div class="product-card-name">{{product.product}}</div>
   <div class="product-card-extra">
     <div class="product-card-detail">
@@ -17,7 +17,11 @@
       {{product.price}} руб.
     </div>
     <div class="product-card-action">
-      <button class="button" (click)="addToCart(product.product)">В корзину</button>
+      <button class="button" *ngIf="!inCart" (click)="addToCart(product.product)">В корзину</button>
+      <button class="button button-in-cart" *ngIf="inCart" (click)="removeFromCart(product.product)">
+        <span>В корзине</span>
+        <span>Удалить</span>
+      </button>
     </div>
   </div>
 

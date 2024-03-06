@@ -10,10 +10,6 @@ export class ChangeSearchService {
   constructor() {
   }
 
-  public setTrue() {
-    this.searchChanged$.next(true);
-  }
-
   public setFalse() {
     this.searchChanged$.next(false);
   }

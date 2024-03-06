@@ -1,0 +1,13 @@
+.angular
+.idea
+.vscode
+node_modules
+dist
+Dockerfile
+.dockerignore
+.editorconfig
+.gitignore
+ API.md
+package-lock.json
+ README.md
+

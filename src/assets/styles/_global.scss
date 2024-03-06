@@ -52,6 +52,30 @@ ul, li {
     color: $button-color;
     border-color: $button-color;
   }
+
+  &.button-in-cart span {
+    color: $button-in-cart-color;
+
+    &:first-child {
+      display: block;
+    }
+
+    &:last-child {
+      display: none;
+    }
+  }
+
+  &:hover {
+    &.button-in-cart span {
+      &:first-child {
+        display: none;
+      }
+
+      &:last-child {
+        display: block;
+      }
+    }
+  }
 }
 
 .mat-mdc-progress-spinner circle {
