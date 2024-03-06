@@ -4,6 +4,7 @@
   margin-bottom: 12px;
   border-radius: 5px;
   color: $gray-text-color;
+  max-width: 250px;
 
   .category-filter-head {
     border-radius: 5px;
@@ -74,3 +75,6 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+@import "../../../../assets/styles/adaptive.scss";
+

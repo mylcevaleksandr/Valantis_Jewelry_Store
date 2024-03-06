@@ -6,11 +6,6 @@ import {LoaderService} from "../../services/loader.service";
 import {Router} from "@angular/router";
 import {debounceTime} from "rxjs";
 import {ChangeSearchService} from "../../services/change-search.service";
-
-// @ts-ignore
-// @ts-ignore
-// @ts-ignore
-// @ts-ignore
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -19,8 +14,6 @@ import {ChangeSearchService} from "../../services/change-search.service";
 export class HeaderComponent implements OnInit {
   public searchField: FormControl<string> = new FormControl();
   public showSearch: boolean = false;
-  public nothingFound: boolean = false;
-  public products: ProductType[] = [];
   @Input() categories: string[] = [];
 
 
@@ -36,7 +29,7 @@ export class HeaderComponent implements OnInit {
     this.searchField.valueChanges.pipe(debounceTime(500)).subscribe(value => {
       if (value && value.length > 1) {
         this.router.navigate(
-          [], {
+          ['/catalog'], {
             queryParams: {
               category: 'product',
               filterField: value

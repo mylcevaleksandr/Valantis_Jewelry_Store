@@ -32,7 +32,7 @@ export class CategoryFilterComponent implements OnInit {
     });
   }
 
-  // Close dropdown menu
+  // Close dropdown menu on body click
   @HostListener('document:click', ['$event']) onDocumentClick(event: Event): void {
     setTimeout(() => {
       if (this.open) {
@@ -71,7 +71,7 @@ export class CategoryFilterComponent implements OnInit {
     if (category && searchField) {
       this.searchChange.setFalse();
       this.router.navigate(
-        [], {
+        ['/catalog'], {
           queryParams: {
             category: category,
             filterField: searchField

@@ -1,0 +1,114 @@
+@media only screen and (max-width: 1200px) {
+  .container {
+    box-sizing: border-box;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .footer {
+  }
+}
+
+@media only screen and (max-width: 1050px) {
+
+  .footer .container {
+    flex-direction: column;
+    text-align: center;
+
+    a.logo {
+      margin-right: 0;
+    }
+
+    .footer-block {
+      .footer-head {
+        margin-bottom: 15px;
+        margin-top: 15px;
+      }
+    }
+
+    .footer-block.footer-menu {
+      margin: 12px 0;
+    }
+
+    .footer-block.footer-categories {
+      margin-right: 0;
+
+      .footer-items {
+        justify-content: space-around;
+        display: flex;
+      }
+    }
+
+    .footer-block.footer-info {
+      margin-right: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+
+      .footer-payment {
+        align-self: center;
+      }
+    }
+
+    .footer-block.footer-contacts {
+      align-self: center;
+    }
+  }
+}
+
+@media only screen and (max-width: 690px) {
+  .header {
+    .container {
+      .header-content {
+        .header-top {
+          .header-top-menu {
+            margin-left: 0;
+
+            nav ul {
+              column-gap: 7px;
+            }
+          }
+
+          a.header-top-phone {
+            margin-right: 0;
+            margin-left: 7px;
+          }
+        }
+
+        .header-bottom {
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+
+          .header-bottom-search {
+            align-self: center;
+          }
+        }
+      }
+    }
+  }
+  .category-filter {
+    min-width: 250px;
+  }
+}
+
+@media only screen and (max-width: 550px) {
+  .footer-items {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media only screen and (max-width: 425px) {
+  .header {
+    .container {
+      flex-direction: column;
+
+      .logo {
+        text-align: center;
+      }
+    }
+  }
+  .catalog-pagination {
+    transform: scale(80%);
+  }
+}

@@ -12,6 +12,7 @@ import {ActivatedRoute} from "@angular/router";
 import {GetIdsFilterType} from "../../../types/getIdsFilterType";
 import {ProcessErrorUtil} from "../../shared/utils/processError.util";
 import {HttpErrorResponse} from "@angular/common/http";
+import {ChangeSearchService} from "../../shared/services/change-search.service";
 
 @Component({
   selector: 'app-catalog',
@@ -23,19 +24,22 @@ export class CatalogComponent implements OnInit {
   public products: ProductType[] = [];
   public catalogCodes: number[] = [];
   public current: number = 1;
-  public perPage: number = 50;
   public total: number = 0;
-  public itemsToDisplay: string[] = [];
   public searchEmpty: boolean = false;
+  private perPage: number = 50;
+  private itemsToDisplay: string[] = [];
+  private brand: string | null = null;
 
-  constructor(private productService: ProductService, private loaderService: LoaderService, private activatedRoute: ActivatedRoute) {
+  constructor(private productService: ProductService, private loaderService: LoaderService, private searchChange: ChangeSearchService, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
       if (params && params['category'] && params['filterField']) {
+        params['category'] === 'brand' ? this.brand = params['filterField'] : this.brand = null;
         this.getIds(params['category'], params['filterField']);
       } else {
+        this.searchChange.setFalse();
         this.getIds();
       }
     });
@@ -96,16 +100,23 @@ export class CatalogComponent implements OnInit {
     });
   }
 
-  //Filter data from backend and return only products with unique ids.
+  //Filter data from backend and return only products with unique ids. Also filter out products with null brand if brand is included.
   private getUniqueProducts(data: ProductType[]): ProductType[] {
     let uniqueProducts: Set<string> = new Set();
     const list: ProductType[] = [...new Set(data.filter((item: ProductType): ProductType | boolean => {
-      if (!uniqueProducts.has(item.id)) {
+      if (this.brand) {
+        if (!uniqueProducts.has(item.id) && item.brand) {
+          uniqueProducts.add(item.id);
+          return item;
+        }
+      } else if (!uniqueProducts.has(item.id)) {
         uniqueProducts.add(item.id);
         return item;
       }
+
       return false;
     }))];
+    this.brand = null;
     return list;
   }
 

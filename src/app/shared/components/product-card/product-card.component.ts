@@ -11,7 +11,7 @@ export class ProductCardComponent {
   @Input() count!: number;
 
 
-  public addToCart(): void {
-    console.log('added to cart');
+  public addToCart(product: string): void {
+    console.log('Added to cart: ' + product);
   }
 }

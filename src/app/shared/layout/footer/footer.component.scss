@@ -10,6 +10,7 @@
 
   .container {
     display: flex;
+    justify-content: space-around;
 
     a.logo {
       border-radius: 3px;
@@ -41,10 +42,6 @@
 
             &:last-child {
               margin-bottom: 0;
-            }
-
-            a {
-
             }
           }
         }
@@ -100,7 +97,6 @@
             height: 35px;
             background-position: top;
             border-radius: 3px;
-            //@include mat.elevation-transition(1000ms);
             @include mat.elevation(5, #43f849);
             transition: 300ms ease-in-out;
 
@@ -137,3 +133,7 @@
     color: $green-text-color;
   }
 }
+
+@import "../../../../assets/styles/adaptive.scss";
+
+

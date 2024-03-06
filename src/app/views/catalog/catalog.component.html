@@ -1,7 +1,7 @@
 <div class="catalog">
   <div class="container">
     <div class="searchEmpty" *ngIf="searchEmpty">
-      <p>По Выбранным Вами поисковым критериям ничего не найдено. Перейдите в общий каталог или выберите другой вариант
+      <p>По выбранным Вами поисковым критериям ничего не найдено. Перейдите в общий каталог или выберите другой вариант
         поиска</p>
       <button class="button" routerLink="/catalog">Catalog</button>
     </div>
@@ -9,7 +9,7 @@
       <product-card *ngFor="let product of products let index = index" [product]="product"
                     [count]="catalogCodes[index]"></product-card>
     </div>
-    <app-pagination *ngIf="idArray.length > 50&&products.length>0"
+    <app-pagination class="catalog-pagination" *ngIf="idArray.length > 50&&products.length>0"
                     [current]="current"
                     [total]="total"
                     (goTo)="onGoTo($event)"
