@@ -18,7 +18,7 @@
       justify-content: center;
       align-items: center;
       margin-right: 63px;
-      @include mat.elevation-transition();
+      transition: 100ms ease-in-out;
       @include mat.elevation(2, #43f849);
 
       &:hover {
@@ -71,9 +71,8 @@
           a {
             padding: 5px;
             border-radius: 3px;
-            @include mat.elevation-transition();
+            transition: 100ms ease-in-out;
             @include mat.elevation(3, #43f849);
-            transition: 200ms ease;
 
             svg {
               margin-top: 2px;
@@ -97,8 +96,8 @@
             height: 35px;
             background-position: top;
             border-radius: 3px;
+            transition: 200ms ease-in-out;
             @include mat.elevation(5, #43f849);
-            transition: 300ms ease-in-out;
 
             &:hover {
               @include mat.elevation(20, #43f849);
