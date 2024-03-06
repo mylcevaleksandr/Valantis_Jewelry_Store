@@ -1,6 +1,6 @@
 # ValantisJewelryStore
 
-## To download project on your local machine run: `git pull https://github.com/mylcevaleksandr/Valantis_Jewelry_Store.git .`
+## To download project on your local machine run: `git clone https://github.com/mylcevaleksandr/Valantis_Jewelry_Store.git .`
 
 ## To run project using Docker:
 
