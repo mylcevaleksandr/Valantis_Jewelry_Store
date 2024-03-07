@@ -48,6 +48,4 @@ export class PaginationComponent implements OnChanges {
     }
     return [1, 2, 3, -1, total];
   }
-
-
 }

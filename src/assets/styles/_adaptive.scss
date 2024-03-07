@@ -98,6 +98,12 @@
   }
 }
 
+@media only screen and (max-width: 485px) {
+  .catalog-pagination {
+    transform: scale(85%);
+  }
+}
+
 @media only screen and (max-width: 425px) {
   .header {
     .container {
@@ -110,5 +116,23 @@
   }
   .catalog-pagination {
     transform: scale(80%);
+  }
+}
+
+@media only screen and (max-width: 415px) {
+  .catalog-pagination {
+    transform: scale(75%);
+  }
+}
+
+@media only screen and (max-width: 365px) {
+  .catalog-pagination {
+    transform: scale(70%);
+  }
+}
+
+@media only screen and (max-width: 335px) {
+  .catalog-pagination {
+    transform: scale(65%);
   }
 }

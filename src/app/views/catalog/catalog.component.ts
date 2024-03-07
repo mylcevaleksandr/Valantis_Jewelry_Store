@@ -64,6 +64,7 @@ export class CatalogComponent implements OnInit {
         if (data.result.length > 0) {
           this.idArray = Array.from(new Set(data.result));
           this.total = Math.ceil(this.idArray.length / this.perPage);
+          this.current = 1;
           this.itemsToDisplay = this.paginate(this.current, this.perPage);
           this.showProducts(this.itemsToDisplay);
         } else {
